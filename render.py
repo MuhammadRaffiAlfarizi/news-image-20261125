@@ -102,43 +102,41 @@ PANELS = [
 # (number, text, source)
 ALSO = [
     (16, "Bitcoin slips 1% to $59,257", "Reuters"),
-    (17, "Dollar steady; Fed hike odds 97%", "Reuters"),
-    (18, "EU hosts Western Balkans summit", "EU Insider"),
-    (19, "US inflation, GDP due 13:30 GMT", "Reuters"),
-    (20, "Steinmeier visits Kenya, meets Ruto", "People Daily"),
-    (21, "Philippine House okays retirement at 56", "Tribune"),
-    (22, "Thai cabinet widens e-withholding tax", "NBT World"),
-    (23, "PhilHealth boosts hospital cover 20%", "Tribune"),
-    (24, "US supply deal blindsided Phl officials", "Tribune"),
-    (25, "Palace rejects Duterte abuse claims", "Bernama"),
-    (26, "Pete Edochie dies at 79", "Punch - GhanaWeb"),
-    (27, "Egypt urged to reopen Mada Masr", "Amnesty - AllAfrica"),
-    (28, "Delhi air poor, AQI 200", "weather.com"),
-    (29, "Iran to execute two men at dawn", "Iran FFM"),
-    (30, "UNRWA worker, Hamas security chief killed", "Particle"),
-    (31, "IDF hits Beirut, targets Hezbollah commander", "JPost"),
-    (32, "Ukraine asks allies for 40 jets", "Euromaidan Press"),
-    (33, "55,000 petitions in occupied eastern Ukraine", "Euromaidan"),
-    (34, "EU nature-law talks resume before vote", "EU Parliament"),
-    (35, "Digital scams hit 77% of Kenyans", "TransUnion"),
-    (36, "M5.9 quake hits Balleny Islands", "USGS"),
-    (37, "Duterte fights ICC witness secrecy", "Tribune"),
+    (17, "EU hosts Western Balkans summit", "EU Insider"),
+    (18, "US inflation, GDP due 13:30 GMT", "Reuters"),
+    (19, "Steinmeier visits Kenya, meets Ruto", "People Daily"),
+    (20, "Philippine House okays retirement at 56", "Tribune"),
+    (21, "Thai cabinet widens e-withholding tax", "NBT World"),
+    (22, "PhilHealth boosts hospital cover 20%", "Tribune"),
+    (23, "US supply deal blindsided Phl officials", "Tribune"),
+    (24, "Palace rejects Duterte abuse claims", "Bernama"),
+    (25, "Pete Edochie dies at 79", "Punch - GhanaWeb"),
+    (26, "Egypt urged to reopen Mada Masr", "Amnesty - AllAfrica"),
+    (27, "Delhi air poor, AQI 200", "weather.com"),
+    (28, "Iran to execute two men at dawn", "Iran FFM"),
+    (29, "UNRWA worker, Hamas security chief killed", "Particle"),
+    (30, "IDF hits Beirut, targets Hezbollah commander", "JPost"),
+    (31, "Ukraine asks allies for 40 jets", "Euromaidan Press"),
+    (32, "55,000 petitions in occupied eastern Ukraine", "Euromaidan"),
+    (33, "EU nature-law talks resume before vote", "EU Parliament"),
+    (34, "Digital scams hit 77% of Kenyans", "TransUnion"),
+    (35, "M5.9 quake hits Balleny Islands", "USGS"),
+    (36, "Duterte fights ICC witness secrecy", "Tribune"),
 ]
 
 # region per ALSO item, same order as ALSO (for region-coloured numbers)
 ALSO_REGIONS = [
-    "WORLD", "WORLD", "EUROPE", "AMERICAS", "AFRICA",
-    "SE ASIA", "SE ASIA", "SE ASIA", "SE ASIA", "SE ASIA",
-    "AFRICA", "AFRICA", "SOUTH ASIA", "MIDDLE EAST", "MIDDLE EAST",
-    "MIDDLE EAST", "EUROPE", "EUROPE", "EUROPE", "AFRICA",
-    "OCEANIA", "SE ASIA",
+    "WORLD", "EUROPE", "AMERICAS", "AFRICA", "SE ASIA",
+    "SE ASIA", "SE ASIA", "SE ASIA", "SE ASIA", "AFRICA",
+    "AFRICA", "SOUTH ASIA", "MIDDLE EAST", "MIDDLE EAST", "MIDDLE EAST",
+    "EUROPE", "EUROPE", "EUROPE", "AFRICA", "OCEANIA",
+    "SE ASIA",
 ]
 
 # (big number, caption)
 NUMBERS = [
     ("16", "economies facing new US tariffs"),
     ("55,000", "sign petitions in occupied eastern Ukraine"),
-    ("4.2%", "Japan services prices rise"),
     ("$59,257", "Bitcoin price, down 1%"),
     ("3.8%", "Australia core inflation"),
     ("30%", "Crimea power cut for 10 days"),
@@ -168,7 +166,7 @@ LEFT_OUT = ("Left out because they happened on an earlier day: "
 
 REGION_COUNTS = [("EUROPE", 6), ("MIDDLE EAST", 5), ("AFRICA", 4), ("SOUTH ASIA", 2),
                  ("EAST ASIA", 3), ("SE ASIA", 7), ("AMERICAS", 2), ("OCEANIA", 2),
-                 ("WORLD", 6)]
+                 ("WORLD", 5)]
 
 
 def font(path, size):
@@ -608,62 +606,79 @@ def draw_mini_map(d, kind, x, y, w, h):
 
 
 def draw_small_scene(d, num, x, y, w, h):
-    """Mini-scene for a small panel's band (about 151x40 px): background,
-    subject and one detail, drawn as a real scene of the story's event
-    in the 22 Nov winner's style, not a flat pictogram. The red number
-    badge (top-left) and the status pill (top-right) are drawn over the
-    scene afterwards, and a small number accent (if any) sits on a navy
-    chip in the bottom-right corner, so each scene keeps its subject
-    clear of that corner and the top strip as sky."""
+    """Mini-scene for a small panel's band (about 149x50 px): a real
+    scene of the story's event with 2-3 recognisable elements, in the
+    22/23 Nov winners' style. The red number badge (top-left) and the
+    status pill (top-right) are drawn over the scene afterwards, and a
+    small number accent (if any) sits on a navy chip in the bottom-right
+    corner, so each scene keeps its subject clear of the top strip and
+    the bottom-right corner."""
     def P(u, v):
         return (x + u * w, y + v * h)
 
     sky = (210, 222, 238)
     white = (240, 240, 235)
     grey = (120, 124, 132)
+    gold = (230, 190, 60)
+    red = (200, 60, 50)
+    green = (90, 170, 100)
+    blue = (110, 170, 220)
+    dark = (18, 20, 34)
 
     if num == 4:
-        # Washington: a tariff notice board on the White House lawn.
-        # The board stands left of centre, clear of the small number
-        # chip in the bottom-right corner; the flagpole is mid-band.
+        # Washington: White House facade + flagpole + tariff notice
+        # board + red seal. Building kept low so its top clears the
+        # status pill; board and seal stay left of the corner chip.
         d.rectangle([x, y, x + w, y + h], fill=sky)
-        d.rectangle([x, P(0, 0.62)[1], x + w, y + h], fill=(96, 160, 96))
-        d.line([P(0.44, 0)[0], P(0, 0.30)[1], P(0.44, 0)[0], P(0, 0.06)[1]], fill=grey, width=2)
-        d.polygon([(P(0.44, 0)[0], P(0, 0.06)[1]), (P(0.44, 0)[0] + 10, P(0, 0.09)[1]),
-                   (P(0.44, 0)[0], P(0, 0.12)[1])], fill=RED)
-        bx0, bx1 = P(0.10, 0)[0], P(0.38, 0)[0]
-        by0, by1 = P(0, 0.50)[1], P(0, 0.88)[1]
-        d.rectangle([bx0, by0, bx1, by1], fill=white, outline=NAVY)
-        d.rectangle([bx0, by0, bx1, by0 + 7], fill=RED)
-        for ly in [0.62, 0.70, 0.78]:
-            d.line([bx0 + 5, P(0, ly)[1], bx1 - 5, P(0, ly)[1]], fill=(150, 150, 145), width=1)
-        sx, sy = P(0.32, 0)[0], P(0, 0.82)[1]
+        d.rectangle([x, y + int(h * 0.62), x + w, y + h], fill=(96, 160, 96))
+        # flagpole with a small US flag, left of the building
+        d.line([P(0.44, 0)[0], P(0, 0.08)[1], P(0.44, 0)[0], P(0, 0.58)[1]], fill=grey, width=2)
+        d.rectangle([P(0.44, 0)[0], P(0, 0.08)[1], P(0.44, 0)[0] + 11, P(0, 0.18)[1]], fill=(178, 34, 52))
+        d.rectangle([P(0.44, 0)[0], P(0, 0.08)[1], P(0.44, 0)[0] + 5, P(0, 0.18)[1]], fill=(60, 59, 110))
+        # White House: flat-roofed white facade with columns
+        bx0, bx1 = P(0.52, 0)[0], P(0.84, 0)[0]
+        by0, by1 = P(0, 0.44)[1], P(0, 0.60)[1]
+        d.rectangle([bx0, by0, bx1, by1], fill=white)
+        d.rectangle([bx0 - 2, by0 - 3, bx1 + 2, by0], fill=white)
+        for cx in [0.56, 0.63, 0.70, 0.77]:
+            d.rectangle([P(cx, 0)[0] - 2, by0 + 3, P(cx, 0)[0] + 2, by1], fill=(200, 200, 195))
+        # tariff notice board, left
+        nx0, nx1 = P(0.06, 0)[0], P(0.34, 0)[0]
+        ny0, ny1 = P(0, 0.42)[1], P(0, 0.92)[1]
+        d.rectangle([nx0, ny0, nx1, ny1], fill=white, outline=NAVY)
+        d.rectangle([nx0, ny0, nx1, ny0 + 7], fill=RED)
+        for ly in [0.58, 0.68, 0.78]:
+            d.line([nx0 + 5, P(0, ly)[1], nx1 - 5, P(0, ly)[1]], fill=(150, 150, 145), width=1)
+        sx, sy = P(0.36, 0)[0], P(0, 0.86)[1]
         d.ellipse([sx - 4, sy - 4, sx + 4, sy + 4], fill=RED)
     elif num == 5:
-        # Exchange floor: a falling red line over a dark board
-        d.rectangle([x, y, x + w, y + h], fill=(18, 20, 34))
+        # Exchange floor: falling red line, candlesticks, ticker bars.
+        d.rectangle([x, y, x + w, y + h], fill=dark)
         d.line([x, P(0, 0.30)[1], x + w, P(0, 0.30)[1]], fill=(60, 64, 80), width=1)
         d.line([x, P(0, 0.65)[1], x + w, P(0, 0.65)[1]], fill=(60, 64, 80), width=1)
-        # falling line ends well clear of the "5.3%" corner chip,
-        # with a down-arrow at its tip
         pts = [P(u, v) for u, v in [(0.04, 0.22), (0.20, 0.34), (0.36, 0.28),
                                     (0.52, 0.52), (0.60, 0.66)]]
-        d.line(pts, fill=(200, 60, 50), width=3)
+        d.line(pts, fill=red, width=3)
         for p in pts:
-            d.ellipse([p[0] - 2, p[1] - 2, p[0] + 2, p[1] + 2], fill=(200, 60, 50))
+            d.ellipse([p[0] - 2, p[1] - 2, p[0] + 2, p[1] + 2], fill=red)
         ex, ey = pts[-1]
-        d.polygon([(ex - 5, ey - 3), (ex + 5, ey - 1), (ex - 1, ey + 7)], fill=(200, 60, 50))
-        # three ticker bars under the line, all left of the corner chip
+        d.polygon([(ex - 5, ey - 3), (ex + 5, ey - 1), (ex - 1, ey + 7)], fill=red)
+        # candlesticks, right side, above the corner chip and below the pill
+        for (cu, cv0, cv1, cc) in [(0.70, 0.48, 0.60, green), (0.78, 0.52, 0.64, red),
+                                   (0.86, 0.46, 0.58, green), (0.94, 0.50, 0.62, red)]:
+            cx = P(cu, 0)[0]
+            d.line([cx, P(0, cv0 - 0.02)[1], cx, P(0, cv1 + 0.02)[1]], fill=cc, width=1)
+            d.rectangle([cx - 3, P(0, cv0)[1], cx + 3, P(0, cv1)[1]], fill=cc)
+        # ticker bars under the line, left of the corner chip
         for (bu, bv, bh) in [(0.40, 0.70, 0.14), (0.48, 0.76, 0.10),
                              (0.56, 0.80, 0.07)]:
             d.rectangle([P(bu, 0)[0], P(0, bv)[1], P(bu, 0)[0] + 7, P(0, bv + bh)[1]],
-                        fill=(200, 60, 50))
+                        fill=red)
     elif num == 6:
-        # Gold vault: stacked bars on a dark vault floor
+        # Gold vault: stacked bars, coin stacks, sparkles.
         d.rectangle([x, y, x + w, y + h], fill=(32, 28, 40))
         d.ellipse([P(0.42, 0)[0] - 20, P(0, 0.10)[1], P(0.42, 0)[0] + 20, P(0, 0.75)[1]],
                   fill=(70, 58, 30))
-        gold = (230, 190, 60)
         edge = (180, 140, 40)
 
         def bar(u0, v0, u1, v1):
@@ -672,11 +687,21 @@ def draw_small_scene(d, num, x, y, w, h):
         bar(0.26, 0.62, 0.40, 0.78)
         bar(0.42, 0.62, 0.56, 0.78)
         bar(0.34, 0.44, 0.48, 0.60)
+        # coin stack, left
         for (cu, cv) in [(0.14, 0.72), (0.14, 0.62), (0.14, 0.52)]:
             cx, cy = P(cu, cv)
             d.ellipse([cx - 8, cy - 3, cx + 8, cy + 3], fill=gold, outline=edge)
+        # second coin stack, right of the bars, above the corner chip
+        for (cu, cv) in [(0.66, 0.52), (0.66, 0.62)]:
+            cx, cy = P(cu, cv)
+            d.ellipse([cx - 7, cy - 3, cx + 7, cy + 3], fill=gold, outline=edge)
+        # sparkles, kept left of the pill zone
+        for (su, sv) in [(0.20, 0.14), (0.32, 0.08), (0.45, 0.14)]:
+            sx, sy = P(su, sv)
+            d.line([sx - 3, sy, sx + 3, sy], fill=(255, 240, 180), width=1)
+            d.line([sx, sy - 3, sx, sy + 3], fill=(255, 240, 180), width=1)
     elif num == 7:
-        # Strasbourg hemicycle: curved rows of seats under EU blue
+        # Strasbourg hemicycle: curved rows of seats, podium, EU flags.
         d.rectangle([x, y, x + w, y + h], fill=(36, 64, 122))
         seat = (210, 215, 225)
         for (row_v, u0, u1, n) in [(0.28, 0.30, 0.56, 5), (0.48, 0.24, 0.60, 7),
@@ -685,206 +710,316 @@ def draw_small_scene(d, num, x, y, w, h):
                 sx = P(u0 + (u1 - u0) * i / (n - 1), 0)[0]
                 sy = P(0, row_v)[1]
                 d.rectangle([sx - 3, sy - 3, sx + 3, sy + 3], fill=seat)
+        # EU flags flanking the seats (poles end above the corner chip)
+        for fu in [0.08, 0.88]:
+            fx = P(fu, 0)[0]
+            d.line([fx, P(0, 0.45)[1], fx, P(0, 0.70)[1]], fill=grey, width=2)
+            d.rectangle([fx, P(0, 0.45)[1], fx + 12, P(0, 0.57)[1]], fill=(0, 51, 153))
+            d.ellipse([fx + 4, P(0, 0.49)[1], fx + 8, P(0, 0.53)[1]], fill=(255, 209, 0))
         d.rectangle([P(0.44, 0)[0], P(0, 0.80)[1], P(0.56, 0)[0], P(0, 0.92)[1]], fill=white)
-        d.ellipse([P(0.50, 0)[0] - 3, P(0, 0.76)[1], P(0.50, 0)[0] + 3, P(0, 0.82)[1]], fill=GOLD)
+        d.ellipse([P(0.50, 0)[0] - 3, P(0, 0.76)[1], P(0.50, 0)[0] + 3, P(0, 0.82)[1]], fill=gold)
     elif num == 8:
-        # Shanghai at dusk: skyline with the Oriental Pearl Tower
+        # Shanghai at dusk: skyline, Oriental Pearl Tower, river + boat.
         vgrad(d, x, y, w, int(h * 0.62), (24, 32, 72), (235, 150, 70))
         d.rectangle([x, y + int(h * 0.62), x + w, y + h], fill=(18, 20, 34))
-        # Oriental Pearl Tower: wide legs, BIG lower sphere, smaller
-        # upper sphere, thin spire with a tiny top sphere
+        # river at the bottom with gold reflections
+        d.rectangle([x, y + int(h * 0.82), x + w, y + h], fill=(20, 40, 70))
+        for (ru, rl) in [(0.60, 0.08), (0.70, 0.06), (0.80, 0.09)]:
+            rx, ry = P(ru, 0.88)
+            d.line([rx, ry, rx + rl * w, ry], fill=gold, width=1)
+        # Oriental Pearl Tower: legs, two spheres, spire
         tx = P(0.45, 0)[0]
-        d.line([(tx - 8, P(0, 0.82)[1]), (tx - 3, P(0, 0.55)[1])], fill=(220, 220, 215), width=2)
-        d.line([(tx + 8, P(0, 0.82)[1]), (tx + 3, P(0, 0.55)[1])], fill=(220, 220, 215), width=2)
-        d.ellipse([tx - 7, P(0, 0.40)[1], tx + 7, P(0, 0.70)[1]], fill=(220, 90, 110))
-        d.line([tx - 7, P(0, 0.55)[1], tx + 7, P(0, 0.55)[1]], fill=(240, 140, 160), width=1)
-        d.ellipse([tx - 5, P(0, 0.42)[1], tx - 1, P(0, 0.47)[1]], fill=(245, 200, 210))
-        d.ellipse([tx - 4, P(0, 0.18)[1], tx + 4, P(0, 0.36)[1]], fill=(220, 90, 110))
-        d.ellipse([tx - 3, P(0, 0.19)[1], tx, P(0, 0.23)[1]], fill=(245, 200, 210))
-        d.line([tx, P(0, 0.18)[1], tx, P(0, 0.02)[1]], fill=(220, 220, 215), width=2)
-        d.ellipse([tx - 2, P(0, 0.02)[1], tx + 2, P(0, 0.08)[1]], fill=(200, 60, 50))
-        for (bu0, bu1, btop) in [(0.24, 0.34, 0.55), (0.60, 0.70, 0.50),
-                                 (0.80, 0.90, 0.58), (0.92, 0.99, 0.50)]:
+        top = P(0, 0.02)[1]
+        mid = P(0, 0.58)[1]
+        d.line([tx - 8, mid, tx, top], fill=(190, 30, 60), width=2)
+        d.line([tx + 8, mid, tx, top], fill=(190, 30, 60), width=2)
+        d.ellipse([tx - 8, P(0, 0.56)[1], tx + 8, P(0, 0.70)[1]], fill=(190, 30, 60))
+        d.ellipse([tx - 5, P(0, 0.30)[1], tx + 5, P(0, 0.40)[1]], fill=(190, 30, 60))
+        d.line([tx, P(0, 0.40)[1], tx, P(0, 0.02)[1]], fill=(190, 30, 60), width=2)
+        # skyline buildings with lit windows
+        for (bu0, bu1, btop) in [(0.02, 0.20, 0.42), (0.22, 0.34, 0.30),
+                                 (0.58, 0.74, 0.36), (0.76, 0.96, 0.28)]:
             bx0, bx1 = P(bu0, 0)[0], P(bu1, 0)[0]
             by = P(0, btop)[1]
-            d.rectangle([bx0, by, bx1, P(0, 0.80)[1]], fill=(16, 18, 32))
-            for wx in range(int(bx0) + 3, int(bx1) - 2, 6):
-                for wy in range(int(by) + 4, int(P(0, 0.80)[1]) - 3, 8):
-                    if (wx * 5 + wy * 3) % 4 < 2:
-                        d.rectangle([wx, wy, wx + 1, wy + 1], fill=(230, 190, 60))
+            d.rectangle([bx0, by, bx1, P(0, 0.80)[1]], fill=(38, 44, 78))
+            for wy in [btop + 0.10, btop + 0.18, btop + 0.26]:
+                for wx in [bu0 + 0.03, bu0 + 0.10, bu0 + 0.16]:
+                    d.rectangle([P(wx, 0)[0], P(0, wy)[1], P(wx, 0)[0] + 2, P(0, wy)[1] + 2],
+                                fill=(255, 210, 120))
+        # red flag on the tallest building, left
         d.line([P(0.16, 0)[0], P(0, 0.42)[1], P(0.16, 0)[0], P(0, 0.10)[1]], fill=white, width=2)
-        d.polygon([(P(0.16, 0)[0], P(0, 0.10)[1]), (P(0.16, 0)[0] + 12, P(0, 0.14)[1]),
-                   (P(0.16, 0)[0], P(0, 0.18)[1])], fill=RED)
+        d.polygon([(P(0.16, 0)[0], P(0, 0.10)[1]), (P(0.24, 0)[0], P(0, 0.13)[1]),
+                   (P(0.16, 0)[0], P(0, 0.16)[1])], fill=RED)
+        # tour boat on the river
+        bx0, bx1 = P(0.30, 0)[0], P(0.48, 0)[0]
+        by0 = P(0, 0.84)[1]
+        d.polygon([(bx0, by0), (bx1, by0), (bx1 - 4, by0 + 7), (bx0 + 4, by0 + 7)], fill=white)
+        d.rectangle([bx0 + 4, by0 - 5, bx1 - 4, by0], fill=(200, 60, 50))
+        d.ellipse([bx0 + 8, by0 - 2, bx0 + 12, by0 + 2], fill=gold)
     elif num == 9:
-        # Beirut street: a damaged building, fire at its base, smoke rising
+        # Beirut street: damaged building, fire, smoke, rubble, ambulance.
         d.rectangle([x, y, x + w, y + h], fill=(150, 160, 180))
         d.rectangle([x, y + int(h * 0.78), x + w, y + h], fill=(90, 88, 84))
+        # flanking buildings
         for (bu0, bu1, btop) in [(0.02, 0.24, 0.30), (0.76, 0.98, 0.24)]:
             bx0, bx1 = P(bu0, 0)[0], P(bu1, 0)[0]
             by = P(0, btop)[1]
-            d.rectangle([bx0, by, bx1, P(0, 0.78)[1]], fill=(110, 112, 118))
-            for wx in range(int(bx0) + 4, int(bx1) - 3, 9):
-                for wy in range(int(by) + 5, int(P(0, 0.78)[1]) - 4, 10):
-                    if (wx + wy) % 3 == 0:
-                        d.rectangle([wx, wy, wx + 3, wy + 4], fill=(70, 72, 78))
-        dx0, dx1 = P(0.36, 0)[0], P(0.64, 0)[0]
-        d.polygon([(dx0, P(0, 0.78)[1]), (dx0, P(0, 0.42)[1]), (dx0 + 8, P(0, 0.36)[1]),
-                   (dx0 + 16, P(0, 0.46)[1]), (dx0 + 24, P(0, 0.38)[1]), (dx1, P(0, 0.44)[1]),
-                   (dx1, P(0, 0.78)[1])], fill=(80, 78, 74))
-        fx = (dx0 + dx1) / 2
-        d.polygon([(fx - 12, P(0, 0.78)[1]), (fx - 6, P(0, 0.58)[1]), (fx, P(0, 0.70)[1]),
-                   (fx + 6, P(0, 0.56)[1]), (fx + 12, P(0, 0.78)[1])], fill=(230, 140, 40))
-        d.polygon([(fx - 6, P(0, 0.78)[1]), (fx - 2, P(0, 0.66)[1]), (fx + 2, P(0, 0.72)[1]),
-                   (fx + 6, P(0, 0.78)[1])], fill=(240, 200, 60))
-        for (su, sv, sr) in [(0.50, 0.28, 7), (0.46, 0.16, 9), (0.54, 0.08, 5)]:
+            d.rectangle([bx0, by, bx1, P(0, 0.78)[1]], fill=(110, 116, 128))
+            for wy in [btop + 0.10, btop + 0.20]:
+                for wx in [bu0 + 0.04, bu0 + 0.12]:
+                    d.rectangle([P(wx, 0)[0], P(0, wy)[1], P(wx, 0)[0] + 2, P(0, wy)[1] + 2],
+                                fill=(235, 220, 160))
+        # damaged building: jagged top, dark holes, slanted face
+        dx0, dx1 = P(0.34, 0)[0], P(0.62, 0)[0]
+        dt, db = P(0, 0.22)[1], P(0, 0.78)[1]
+        d.polygon([(dx0, db), (dx0, dt + 10), (dx0 + 8, dt + 4), (dx0 + 14, dt + 10),
+                   (dx0 + 20, dt), (dx1 - 8, dt + 8), (dx1, dt + 2), (dx1, db)],
+                  fill=(90, 88, 84))
+        d.polygon([(dx0, db), (dx0, dt + 10), (dx0 + 8, dt + 4), (dx0 + 14, dt + 10),
+                   (dx0 + 20, dt), (dx1 - 8, dt + 8), (dx1, dt + 2), (dx1, db)],
+                  outline=(200, 160, 40), width=2)
+        for (hu, hv) in [(0.40, 0.32), (0.52, 0.42)]:
+            hx, hy = P(hu, hv)
+            d.rectangle([hx, hy, hx + 6, hy + 6], fill=(20, 18, 16))
+        # fire: three flame polygons rising from the base
+        fx0 = P(0.42, 0)[0]
+        for (fdx, fw, fh, fc) in [(0, 12, 16, (240, 140, 40)), (4, 9, 12, (240, 90, 30)),
+                                  (8, 6, 8, (250, 200, 60))]:
+            d.polygon([(fx0 + fdx, P(0, 0.78)[1]), (fx0 + fdx + fw // 2, P(0, 0.78)[1] - fh),
+                       (fx0 + fdx + fw, P(0, 0.78)[1])], fill=fc)
+        # smoke, kept left of the pill zone
+        for (su, sv, sr) in [(0.44, 0.28, 5), (0.47, 0.16, 6), (0.46, 0.08, 7)]:
             sx, sy = P(su, sv)
-            d.ellipse([sx - sr, sy - sr // 2, sx + sr, sy + sr // 2], fill=(200, 200, 200))
+            d.ellipse([sx - sr, sy - sr, sx + sr, sy + sr], fill=(200, 200, 205))
+        # rubble at the damaged building's base
+        for (ru, rv, rr) in [(0.40, 0.80, 5), (0.46, 0.84, 6), (0.54, 0.80, 5), (0.60, 0.85, 4)]:
+            rx, ry = P(ru, rv)
+            d.polygon([(rx - rr, ry), (rx, ry - rr), (rx + rr, ry)], fill=(110, 108, 104))
+        # ambulance, bottom-left
+        ax0, ax1 = P(0.03, 0)[0], P(0.20, 0)[0]
+        ay0, ay1 = P(0, 0.80)[1], P(0, 0.94)[1]
+        d.rectangle([ax0, ay0, ax1, ay1], fill=white)
+        d.rectangle([ax0 + 8, ay0 - 4, ax1 - 4, ay0], fill=white)
+        d.rectangle([ax0 + 5, ay0 + 2, ax0 + 9, ay0 + 5], fill=RED)
+        d.ellipse([ax0 + 3, ay1 - 1, ax0 + 7, ay1 + 3], fill=INK)
+        d.ellipse([ax1 - 7, ay1 - 1, ax1 - 3, ay1 + 3], fill=INK)
+        # leaning street lamp, right
+        lx0, ly0 = P(0.72, 0)[0], P(0, 0.78)[1]
+        lx1, ly1 = P(0.76, 0)[0], P(0, 0.44)[1]
+        d.line([lx0, ly0, lx1, ly1], fill=grey, width=2)
+        d.ellipse([lx1 - 3, ly1 - 2, lx1 + 3, ly1 + 2], fill=gold)
     elif num == 10:
-        # Strait of Hormuz: a tanker with barrels in the strait
+        # Strait of Hormuz: tanker, barrels, oil platform, tugboat.
         vgrad(d, x, y, w, int(h * 0.35), (196, 208, 226), (238, 226, 200))
         d.rectangle([x, y + int(h * 0.35), x + w, y + h], fill=(38, 90, 140))
-        for (wu, wv, wl) in [(0.10, 0.45, 0.10), (0.30, 0.70, 0.12),
-                             (0.60, 0.85, 0.10), (0.85, 0.50, 0.08)]:
-            wx, wy = P(wu, wv)
-            d.line([wx, wy, wx + wl * w, wy], fill=(120, 160, 210), width=1)
-        hx0, hx1 = P(0.12, 0)[0], P(0.88, 0)[0]
+        # waves
+        for (wv, wl) in [(0.82, 0.26), (0.90, 0.20), (0.96, 0.30)]:
+            d.arc([x - 30, P(0, wv)[1], x + w + 30, P(0, wv)[1] + 18], 200, 340,
+                  fill=(200, 220, 240), width=1)
+        # tanker hull (narrowed to leave room for the platform, right)
+        hx0, hx1 = P(0.10, 0)[0], P(0.80, 0)[0]
         hy = P(0, 0.60)[1]
-        d.polygon([(hx0, hy), (hx1 - 10, hy), (hx1, hy + 10), (hx0 + 6, hy + 10)],
-                  fill=(60, 62, 68))
-        d.rectangle([hx0, hy - 3, hx1 - 10, hy], fill=(150, 150, 145))
-        for (cu, cc) in [(0.30, (200, 60, 50)), (0.40, (60, 100, 180)),
-                         (0.50, (230, 190, 60)), (0.60, (90, 170, 100))]:
+        d.polygon([(hx0, hy - 6), (hx1, hy - 6), (hx1 - 6, hy + 6), (hx0 + 6, hy + 6)],
+                  fill=(190, 40, 40))
+        d.rectangle([hx0, hy - 10, hx1, hy - 6], fill=(40, 40, 48))
+        # containers
+        for (cu, cc) in [(0.28, (200, 60, 50)), (0.38, (60, 120, 200)),
+                         (0.48, (200, 150, 40)), (0.58, (40, 140, 70))]:
             cx = P(cu, 0)[0]
-            d.rectangle([cx, P(0, 0.42)[1], cx + 12, P(0, 0.54)[1]], fill=cc,
-                        outline=(255, 255, 255))
+            d.rectangle([cx, P(0, 0.42)[1], cx + 12, P(0, 0.54)[1]], fill=cc)
+        # bridge
         d.rectangle([P(0.70, 0)[0], P(0, 0.50)[1], P(0.78, 0)[0], P(0, 0.65)[1]], fill=white)
-        for (bu, with_dollar) in [(0.18, True), (0.24, False)]:
+        # barrels on the deck
+        for bu in [0.16, 0.22]:
             bx = P(bu, 0)[0]
-            by0, by1 = P(0, 0.46)[1], P(0, 0.60)[1]
-            d.ellipse([bx, by0, bx + 10, by0 + 4], fill=(70, 130, 190))
-            d.rectangle([bx, by0 + 2, bx + 10, by1], fill=(70, 130, 190))
-            d.ellipse([bx, by1 - 4, bx + 10, by1], fill=(50, 100, 160))
-            if with_dollar:
-                d.text((bx + 2, by0 + 2), "$", font=font(SANS_B, 9), fill=white)
-        d.line([P(0.02, 0)[0], P(0, 0.78)[1], P(0.10, 0)[0], P(0, 0.78)[1]],
-               fill=(200, 220, 240), width=1)
-        d.line([P(0.04, 0)[0], P(0, 0.86)[1], P(0.14, 0)[0], P(0, 0.86)[1]],
-               fill=(200, 220, 240), width=1)
+            d.rectangle([bx, P(0, 0.46)[1], bx + 8, P(0, 0.60)[1]], fill=(230, 140, 40))
+        # oil platform on the horizon, right side, below the pill
+        px0, px1 = P(0.82, 0)[0], P(0.97, 0)[0]
+        py0, py1 = P(0, 0.55)[1], P(0, 0.76)[1]
+        d.line([px0 + 3, py1, px0 + 6, py0], fill=(90, 85, 75), width=2)
+        d.line([px1 - 3, py1, px1 - 6, py0], fill=(90, 85, 75), width=2)
+        d.rectangle([px0, py0 - 4, px1, py0], fill=(90, 85, 75))
+        d.polygon([(px1 - 4, py0), (px1 + 2, py0 - 4), (px1 + 2, py0)], fill=(240, 200, 60))
+        # tugboat, bottom-left
+        tx0, tx1 = P(0.03, 0)[0], P(0.16, 0)[0]
+        ty0 = P(0, 0.84)[1]
+        d.polygon([(tx0, ty0), (tx1, ty0), (tx1 - 3, ty0 + 6), (tx0 + 3, ty0 + 6)], fill=(200, 60, 50))
+        d.rectangle([tx0 + 4, ty0 - 6, tx0 + 10, ty0], fill=white)
     elif num == 11:
-        # Canberra: Parliament House on its hill, with a price tag
+        # Canberra: Parliament House, flag, price tag, chart, gum trees.
         d.rectangle([x, y, x + w, y + h], fill=sky)
-        d.polygon([(x, y + h), (x, P(0, 0.70)[1]), (x + int(w * 0.25), P(0, 0.55)[1]),
-                   (x + int(w * 0.50), P(0, 0.50)[1]), (x + int(w * 0.75), P(0, 0.55)[1]),
-                   (x + w, P(0, 0.70)[1]), (x + w, y + h)], fill=(96, 160, 96))
+        d.polygon([(x, y + h), (x, P(0, 0.66)[1]), (x + w, P(0, 0.52)[1]), (x + w, y + h)],
+                  fill=(96, 160, 96))
+        # parliament building
         bx0, bx1 = P(0.30, 0)[0], P(0.68, 0)[0]
         by0, by1 = P(0, 0.42)[1], P(0, 0.62)[1]
+        d.polygon([(bx0, by0), (bx1, by0), ((bx0 + bx1) / 2, P(0, 0.30)[1])], fill=(70, 70, 70))
         d.rectangle([bx0, by0, bx1, by1], fill=white)
         for cx in [0.36, 0.44, 0.52, 0.60]:
             d.rectangle([P(cx, 0)[0] - 2, by0 + 3, P(cx, 0)[0] + 2, by1], fill=(200, 200, 195))
+        # flagpole with blue flag
         d.line([P(0.49, 0)[0], P(0, 0.42)[1], P(0.49, 0)[0], P(0, 0.08)[1]], fill=grey, width=2)
         d.rectangle([P(0.49, 0)[0], P(0, 0.08)[1], P(0.49, 0)[0] + 12, P(0, 0.14)[1]],
                     fill=(60, 100, 180))
-        d.ellipse([P(0.49, 0)[0] + 4, P(0, 0.10)[1], P(0.49, 0)[0] + 8, P(0, 0.13)[1]],
-                  fill=white)
-        # price tag, big enough to read: pointed end left with a
-        # punched hole, string looping up, "3.8%" printed on it
+        # price tag, left
         tx0, tx1 = P(0.03, 0)[0], P(0.27, 0)[0]
         ty0, ty1 = P(0, 0.46)[1], P(0, 0.78)[1]
-        midy = (ty0 + ty1) / 2
-        d.polygon([(tx0 + 7, ty0), (tx1, ty0), (tx1, ty1), (tx0 + 7, ty1),
-                   (tx0, midy)], fill=(230, 190, 60), outline=(180, 140, 40))
-        d.ellipse([tx0 + 2, midy - 3, tx0 + 8, midy + 3], fill=NAVY)
-        d.ellipse([tx0 + 4, midy - 1, tx0 + 6, midy + 1], fill=(255, 255, 255))
-        d.line([tx0 + 5, midy, P(0.01, 0)[0], P(0, 0.36)[1]], fill=RED, width=1)
-        d.text((tx0 + 12, midy - 5), "3.8%", font=font(SANS_B, 8), fill=NAVY)
+        d.polygon([(tx0, ty0), (tx1, ty0), (tx1, ty1), (tx0, ty1), (tx0 - 4, (ty0 + ty1) / 2)],
+                  fill=white, outline=NAVY)
+        d.ellipse([tx0 - 2, (ty0 + ty1) / 2 - 2, tx0 + 2, (ty0 + ty1) / 2 + 2], fill=NAVY)
+        d.line([tx0, (ty0 + ty1) / 2, tx0 + 8, ty0 + 7], fill=(150, 150, 145), width=1)
+        d.line([tx0, (ty0 + ty1) / 2, tx0 + 8, ty1 - 7], fill=(150, 150, 145), width=1)
+        d.text((tx0 + 5, ty0 + 5), "3.8%", font=font(SANS_B, 10), fill=INK)
+        # rising chart on a white card, right side below the pill
+        # (the hill is the same green as the arrow, so the chart needs
+        # a white card behind it to read)
+        cx0, cx1 = P(0.68, 0)[0], P(0.97, 0)[0]
+        cy0, cy1 = P(0, 0.44)[1], P(0, 0.66)[1]
+        d.rectangle([cx0, cy0, cx1, cy1], fill=white, outline=NAVY)
+        pts = [P(u, v) for u, v in [(0.71, 0.62), (0.78, 0.55), (0.85, 0.58), (0.92, 0.48)]]
+        d.line(pts, fill=green, width=2)
+        for p in pts:
+            d.ellipse([p[0] - 2, p[1] - 2, p[0] + 2, p[1] + 2], fill=green)
+        ex, ey = pts[-1]
+        d.polygon([(ex - 5, ey + 2), (ex + 5, ey + 2), (ex, ey - 5)], fill=green)
+        # gold coin pile on the hill, left of the corner chip
+        for (cu, cv) in [(0.58, 0.78), (0.64, 0.78), (0.61, 0.70)]:
+            cx, cy = P(cu, cv)
+            d.ellipse([cx - 6, cy - 3, cx + 6, cy + 3], fill=gold, outline=(180, 140, 40))
     elif num == 12:
-        # Geneva: a row of UN flags with the orange 16 Days ribbon
+        # Geneva: UN flags, orange ribbon, crowd, mini-ribbons.
         d.rectangle([x, y, x + w, y + h], fill=CREAM)
         d.rectangle([x, y + int(h * 0.85), x + w, y + h], fill=(200, 196, 186))
-        for pu in [0.14, 0.28, 0.42, 0.56, 0.70]:
-            px = P(pu, 0)[0]
-            d.line([px, P(0, 0.50)[1], px, P(0, 0.88)[1]], fill=grey, width=2)
-            d.rectangle([px, P(0, 0.50)[1], px + 13, P(0, 0.62)[1]], fill=(60, 100, 180))
-            d.ellipse([px + 4, P(0, 0.53)[1], px + 9, P(0, 0.59)[1]], fill=white)
-        # 16 Days ribbon: folded loop at top, two tails crossing at
-        # the loop's base and hanging down with notched ends
+        # flags on poles (UN blue)
+        for fu in [0.14, 0.28, 0.42, 0.56, 0.70]:
+            fx = P(fu, 0)[0]
+            d.line([fx, P(0, 0.50)[1], fx, P(0, 0.88)[1]], fill=grey, width=2)
+            d.rectangle([fx, P(0, 0.50)[1], fx + 13, P(0, 0.66)[1]], fill=(90, 140, 220))
+            d.ellipse([fx + 3, P(0, 0.53)[1], fx + 10, P(0, 0.63)[1]], fill=white)
+        # big orange ribbon: loop + two tails
         rx0, rx1 = P(0.30, 0)[0], P(0.44, 0)[0]
         ry0, ry1 = P(0, 0.14)[1], P(0, 0.40)[1]
         d.ellipse([rx0, ry0, rx1, ry1], outline=(230, 120, 40), width=4)
-        d.ellipse([rx0 + 4, ry0 + 4, rx1 - 4, ry1 - 4], fill=CREAM)
-        cxm = (rx0 + rx1) / 2
-        base_y = ry1 - 2
-        d.polygon([(cxm - 6, base_y), (cxm + 1, base_y), (cxm - 2, P(0, 0.66)[1]),
-                   (cxm - 5, P(0, 0.60)[1]), (cxm - 8, P(0, 0.66)[1])],
+        d.polygon([(rx0 + 6, ry1 - 6), (rx0 + 10, ry1 + 12), (rx0 + 4, ry1 + 10)],
                   fill=(230, 120, 40))
-        d.polygon([(cxm - 1, base_y), (cxm + 6, base_y), (cxm + 8, P(0, 0.62)[1]),
-                   (cxm + 5, P(0, 0.56)[1]), (cxm + 2, P(0, 0.62)[1])],
+        d.polygon([(rx1 - 6, ry1 - 6), (rx1 - 10, ry1 + 12), (rx1 - 4, ry1 + 10)],
                   fill=(230, 120, 40))
+        # crowd silhouettes along the bottom, left of the corner chip
+        skin = (210, 180, 140)
+        for i, cu in enumerate([0.06, 0.14, 0.22, 0.30, 0.38, 0.46, 0.54]):
+            cx = P(cu, 0)[0]
+            cy = P(0, 0.88)[1]
+            d.rectangle([cx - 6, cy + 2, cx + 6, y + h],
+                        fill=[(200, 60, 50), (60, 100, 180), (230, 140, 40), (40, 140, 70)][i % 4])
+            d.ellipse([cx - 5, cy - 5, cx + 5, cy + 5], fill=skin)
+        # mini-ribbons, right side above the corner chip
+        for mu in [0.74, 0.81, 0.88]:
+            mx = P(mu, 0)[0]
+            my = P(0, 0.52)[1]
+            d.ellipse([mx - 4, my - 3, mx + 4, my + 3], outline=(230, 120, 40), width=2)
+            d.polygon([(mx - 3, my + 2), (mx + 3, my + 2), (mx, my + 8)], fill=(230, 120, 40))
     elif num == 13:
-        # New Delhi: a street rally under a tricolour banner, megaphone up
+        # New Delhi: tricolour banner, crowd, megaphone, placards.
         d.rectangle([x, y, x + w, y + h], fill=(244, 238, 223))
         d.rectangle([x, y, x + w, P(0, 0.10)[1]], fill=(230, 140, 40))
         d.rectangle([x, P(0, 0.10)[1], x + w, P(0, 0.20)[1]], fill=white)
         d.rectangle([x, P(0, 0.20)[1], x + w, P(0, 0.30)[1]], fill=(40, 140, 70))
-        skin = (210, 180, 140)
-        caps = [(200, 60, 50), (60, 100, 180), (230, 140, 40), (40, 140, 70)]
-        for i, cu in enumerate([0.06, 0.16, 0.26, 0.36, 0.46, 0.56, 0.66]):
+        # second row of heads (smaller, darker, between front-row heads)
+        for cu in [0.11, 0.21, 0.31, 0.41, 0.51]:
+            cx = P(cu, 0)[0]
+            cy = P(0, 0.56)[1]
+            d.ellipse([cx - 5, cy - 5, cx + 5, cy + 5], fill=(190, 160, 125))
+        # front-row crowd: heads, shoulders, arms
+        skin = (215, 180, 135)
+        for (cu, cc) in [(0.06, (220, 100, 90)), (0.16, (240, 200, 110)),
+                         (0.26, (110, 160, 240)), (0.36, (160, 90, 130)),
+                         (0.46, (220, 140, 40)), (0.56, (140, 200, 120)),
+                         (0.66, (190, 80, 60))]:
             cx = P(cu, 0)[0]
             cy = P(0, 0.66)[1]
-            d.rectangle([cx - 7, cy + 4, cx + 7, y + h], fill=caps[i % 4])
+            d.rectangle([cx - 7, cy + 2, cx + 7, y + h], fill=cc)
             d.ellipse([cx - 6, cy - 6, cx + 6, cy + 6], fill=skin)
-            d.ellipse([cx - 6, cy - 6, cx + 6, cy - 1], fill=caps[i % 4])
-        # megaphone held up mid-rally, left of the status pill (the old
-        # right-side position hid behind the pill)
+            d.line([cx - 7, cy + 4, cx - 13, cy - 4], fill=skin, width=2)
+        # megaphone, mid-rally
         mx0, mx1 = P(0.30, 0)[0], P(0.48, 0)[0]
         my0, my1 = P(0, 0.36)[1], P(0, 0.52)[1]
-        d.polygon([(mx0, (my0 + my1) / 2 - 4), (mx1, my0), (mx1, my1), (mx0, (my0 + my1) / 2 + 4)],
-                  fill=white, outline=grey)
-        d.rectangle([mx0 - 6, (my0 + my1) / 2 - 3, mx0, (my0 + my1) / 2 + 3], fill=(230, 190, 60))
-        d.arc([mx1 + 2, my0 - 2, mx1 + 9, my1], -60, 60, fill=(230, 190, 60), width=2)
+        d.rectangle([mx0, my0 + 4, mx0 + 6, my1 - 4], fill=RED)
+        d.polygon([(mx0 + 6, my0), (mx1, my0 - 4), (mx1, my1 + 4), (mx0 + 6, my1)], fill=RED)
+        d.ellipse([mx1 - 2, my0 - 4, mx1 + 2, my1 + 4], fill=(240, 100, 90))
+        # placards on short sticks, right side below the pill
+        for (pu, pv) in [(0.64, 0.44), (0.82, 0.42)]:
+            px = P(pu, 0)[0]
+            py = P(0, pv)[1]
+            d.line([px + 5, py + 10, px + 5, py + 13], fill=grey, width=2)
+            d.rectangle([px, py, px + 16, py + 10], fill=white, outline=grey)
+            d.line([px + 3, py + 4, px + 13, py + 4], fill=(150, 150, 145), width=1)
+            d.line([px + 3, py + 7, px + 10, py + 7], fill=(150, 150, 145), width=1)
     elif num == 14:
-        # Crimea at night: a pylon over a blacked-out city, two lights on
+        # Crimea at night: pylon, blacked-out city, lit windows, moon.
         d.rectangle([x, y, x + w, y + h], fill=(16, 18, 32))
-        for (su, sv) in [(0.22, 0.12), (0.32, 0.08), (0.42, 0.16), (0.28, 0.22)]:
+        # moon + stars (top-centre, clear of badge and pill)
+        mx, my = P(0.30, 0)[0], P(0, 0.10)[1]
+        d.ellipse([mx - 4, my - 4, mx + 4, my + 4], fill=(235, 235, 220))
+        for (su, sv) in [(0.20, 0.10), (0.32, 0.06), (0.44, 0.12), (0.56, 0.06)]:
             sx, sy = P(su, sv)
             d.ellipse([sx - 1, sy - 1, sx + 1, sy + 1], fill=white)
+        # city silhouettes
         for (bu0, bu1, btop) in [(0.02, 0.20, 0.55), (0.30, 0.48, 0.48), (0.52, 0.70, 0.58)]:
             bx0, bx1 = P(bu0, 0)[0], P(bu1, 0)[0]
             by = P(0, btop)[1]
             d.rectangle([bx0, by, bx1, y + h], fill=(10, 12, 24))
-        d.rectangle([P(0.66, 0)[0] + 3, P(0, 0.56)[1], P(0.66, 0)[0] + 5, P(0, 0.58)[1]],
-                    fill=(230, 190, 60))
-        d.rectangle([P(0.44, 0)[0] + 3, P(0, 0.64)[1], P(0.44, 0)[0] + 5, P(0, 0.66)[1]],
-                    fill=(230, 190, 60))
+        # lit windows (four, the only lights on)
+        for (wu, wv) in [(0.10, 0.60), (0.38, 0.54), (0.60, 0.64), (0.66, 0.56)]:
+            wx, wy = P(wu, wv)
+            d.rectangle([wx, wy, wx + 3, wy + 3], fill=gold)
+        # main pylon
         tx = P(0.45, 0)[0]
         d.line([(tx - 8, y + h), (tx, P(0, 0.15)[1])], fill=(140, 140, 150), width=2)
         d.line([(tx + 8, y + h), (tx, P(0, 0.15)[1])], fill=(140, 140, 150), width=2)
-        d.line([tx - 16, P(0, 0.30)[1], tx + 16, P(0, 0.30)[1]], fill=(140, 140, 150), width=2)
-        d.line([tx - 10, P(0, 0.45)[1], tx + 10, P(0, 0.45)[1]], fill=(140, 140, 150), width=2)
-        d.line([tx - 12, P(0, 0.62)[1], tx + 12, P(0, 0.62)[1]], fill=(140, 140, 150), width=2)
-        d.ellipse([tx - 2, P(0, 0.12)[1], tx + 2, P(0, 0.16)[1]], fill=(230, 190, 60))
-        d.line([P(0.10, 0)[0], P(0, 0.20)[1], tx, P(0, 0.15)[1]], fill=(140, 140, 150), width=1)
+        d.line([tx - 10, P(0, 0.30)[1], tx + 10, P(0, 0.30)[1]], fill=(140, 140, 150), width=2)
+        d.line([tx - 12, P(0, 0.45)[1], tx + 12, P(0, 0.45)[1]], fill=(140, 140, 150), width=2)
+        d.line([tx - 14, P(0, 0.62)[1], tx + 14, P(0, 0.62)[1]], fill=(140, 140, 150), width=2)
+        d.ellipse([tx - 2, P(0, 0.12)[1], tx + 2, P(0, 0.18)[1]], fill=gold)
+        # second, smaller pylon on the right (legs end above the corner chip)
+        ux = P(0.80, 0)[0]
+        d.line([(ux - 7, P(0, 0.70)[1]), (ux, P(0, 0.44)[1])], fill=(140, 140, 150), width=2)
+        d.line([(ux + 7, P(0, 0.70)[1]), (ux, P(0, 0.44)[1])], fill=(140, 140, 150), width=2)
+        d.line([ux - 11, P(0, 0.56)[1], ux + 11, P(0, 0.56)[1]], fill=(140, 140, 150), width=2)
+        d.ellipse([ux - 2, P(0, 0.42)[1], ux + 2, P(0, 0.46)[1]], fill=gold)
     elif num == 15:
-        # Bangkok: parliament with its golden spire, leaf and check
+        # Bangkok: parliament with golden spire, leaf + check, fence.
         d.rectangle([x, y, x + w, y + h], fill=sky)
         d.rectangle([x, P(0, 0.75)[1], x + w, y + h], fill=(96, 160, 96))
+        # parliament
         bx0, bx1 = P(0.20, 0)[0], P(0.58, 0)[0]
         by0, by1 = P(0, 0.40)[1], P(0, 0.75)[1]
         d.polygon([(bx0, by0), (bx1, by0), ((bx0 + bx1) / 2, P(0, 0.22)[1])], fill=GOLD)
         d.rectangle([bx0, by0, bx1, by1], fill=white)
-        for cx in [0.26, 0.34, 0.42, 0.50]:
+        for cx in [0.26, 0.32, 0.38, 0.44, 0.50]:
             d.rectangle([P(cx, 0)[0] - 2, by0 + 3, P(cx, 0)[0] + 2, by1], fill=(200, 200, 195))
         sx = P(0.39, 0)[0]
-        d.line([sx, P(0, 0.22)[1], sx, P(0, 0.06)[1]], fill=GOLD, width=2)
-        d.ellipse([sx - 3, P(0, 0.03)[1], sx + 3, P(0, 0.09)[1]], fill=GOLD)
-        lx0, lx1 = P(0.60, 0)[0], P(0.75, 0)[0]
+        d.line([sx, P(0, 0.22)[1], sx, P(0, 0.06)[1]], fill=GOLD, width=3)
+        d.ellipse([sx - 2, P(0, 0.03)[1], sx + 2, P(0, 0.08)[1]], fill=GOLD)
+        # second, smaller building on the right (roof apex below the pill)
+        cx0, cx1 = P(0.72, 0)[0], P(0.90, 0)[0]
+        cy0, cy1 = P(0, 0.48)[1], P(0, 0.70)[1]
+        d.polygon([(cx0, cy0), (cx1, cy0), ((cx0 + cx1) / 2, P(0, 0.44)[1])], fill=GOLD)
+        d.rectangle([cx0, cy0, cx1, cy1], fill=white)
+        for wx in [0.76, 0.82, 0.88]:
+            d.rectangle([P(wx, 0)[0] - 1, cy0 + 3, P(wx, 0)[0] + 1, cy1], fill=(200, 200, 195))
+        # golden fence along the front
+        for fx in range(int(P(0.05, 0)[0]), int(P(0.55, 0)[0]), 6):
+            d.line([fx, P(0, 0.80)[1], fx, P(0, 0.94)[1]], fill=GOLD, width=2)
+        d.line([P(0.05, 0)[0], P(0, 0.80)[1], P(0.55, 0)[0], P(0, 0.80)[1]], fill=GOLD, width=1)
+        # green leaf + white check, shifted left to clear the corner chip
+        lx0, lx1 = P(0.56, 0)[0], P(0.68, 0)[0]
         ly0, ly1 = P(0, 0.55)[1], P(0, 0.85)[1]
-        d.polygon([(lx0, (ly0 + ly1) / 2), ((lx0 + lx1) / 2, ly0), (lx1, (ly0 + ly1) / 2),
-                   ((lx0 + lx1) / 2, ly1)], fill=(60, 160, 80))
-        d.line([(lx0, ly1), ((lx0 + lx1) / 2, (ly0 + ly1) / 2)], fill=(40, 120, 60), width=1)
-        d.line([(lx0 + 3, ly1 - 6), (lx0 + 7, ly1 - 2), (lx0 + 14, ly1 - 12)], fill=white, width=2)
-
-
+        d.polygon([(lx0, ly0), (lx1, ly0), (lx1, ly1), (lx0, ly1)], fill=(60, 140, 70))
+        d.line([lx0 + 3, ly1 - 6, lx0 + 6, ly1 - 3, lx1 - 2, ly0 + 3], fill=white, width=2)
+        # lotus flowers on the lawn
+        for (lu, lv) in [(0.12, 0.88), (0.20, 0.92)]:
+            lx, ly = P(lu, lv)
+            d.ellipse([lx - 3, ly - 2, lx + 3, ly + 2], fill=(240, 140, 170))
 def draw_status_pill(d, text, x, y):
     f = font(SANS_B, 10)
     tw = f.getlength(text)
@@ -896,7 +1031,7 @@ def draw_status_pill(d, text, x, y):
 def draw_panel(p, x, y, w, h, large):
     img = Image.new("RGB", (w, h), PANEL_BG)
     d = ImageDraw.Draw(img)
-    band_h = 96 if large else 44
+    band_h = 96 if large else 54
     d.rectangle([0, 0, w, band_h], fill=NAVY)
     # hero panels get a schematic mini-map; small panels get a drawn
     # mini-scene of the story's event. The status pill sits top-right
@@ -928,18 +1063,18 @@ def draw_panel(p, x, y, w, h, large):
     d.text((4 + 5, 6), num, font=nf, fill=(255, 255, 255))
     draw_status_pill(d, p[7], w - font(SANS_B, 10).getlength(p[7]) - 16, 5)
     # region + topic
-    ty = band_h + 6
+    ty = band_h + (6 if large else 5)
     rf = font(SANS_B, 11 if large else 10)
     d.text((6, ty), p[1] + " - " + p[2], font=rf, fill=REGION_COLORS[p[1]])
-    ty += 15 if large else 14
+    ty += 15 if large else 13
     pf = font(SANS_B, 11 if large else 10)
     # country flag chip before the place label
     fw, fh = (18, 12) if large else (14, 10)
     draw_flag(d, PANEL_FLAGS[p[0] - 1], 6, ty + 1, fw, fh)
     d.text((6 + fw + (4 if large else 3), ty), p[3], font=pf, fill=INK)
-    ty += 15 if large else 14
+    ty += 15 if large else 13
     # headline
-    hf_size = 17 if large else 13
+    hf_size = 17 if large else 12
     hf = font(SERIF_B, hf_size)
     while hf.getlength(p[4]) > (w - 12) * 2 and hf_size > 11:
         hf_size -= 1
@@ -970,7 +1105,7 @@ def draw_numbers(x, y, w, h):
     d.line([10, 28, w - 10, 28], fill=GOLD, width=2)
     nf = font(SANS_B, 21)
     cf = font(SANS, 10)
-    yy = 38
+    yy = 42
     for num, cap in NUMBERS:
         d.text((10, yy), num, font=nf, fill=GOLD)
         nw = nf.getlength(num)
@@ -980,7 +1115,7 @@ def draw_numbers(x, y, w, h):
         for ln in cap_lines[:2]:
             d.text((10 + nw + 8, cy), ln, font=cf, fill=(235, 235, 230))
             cy += 12
-        yy += 26
+        yy += 30
     d.rectangle([0, 0, w - 1, h - 1], outline=BORDER, width=2)
     return img
 
@@ -1078,7 +1213,7 @@ def build():
     d.text((M, 4), "THE WORLD IN ONE DAY", font=bf, fill=(255, 255, 255))
     day = "  -  DAY 329 OF 2026"
     d.text((M + bf.getlength("THE WORLD IN ONE DAY"), 4), day, font=bf, fill=GOLD)
-    rt = "37 STORIES - 9 REGIONS - EDITION TO 13:30 UTC"
+    rt = "36 STORIES - 9 REGIONS - EDITION TO 13:30 UTC"
     d.text((W - M - bf.getlength(rt), 4), rt, font=bf, fill=GOLD)
     # masthead: title at 50pt (was 56) so its "y" descender (ink bottom
     # y=80) clears the red sub-headline below (ink top y=84, 4px gap);
@@ -1215,11 +1350,11 @@ def build():
     img.paste(draw_numbers(nx, py1, col_w, ph1), (nx, py1))
     # rows 2 and 3: 6 small each
     sw = (CW - 5 * 6) // 6
-    for row, y0 in enumerate((454, 612)):
+    for row, y0 in enumerate((450, 610)):
         for i in range(6):
             p = PANELS[3 + row * 6 + i]
             px = M + i * (sw + 6)
-            img.paste(draw_panel(p, px, y0, sw, 152, False), (px, y0))
+            img.paste(draw_panel(p, px, y0, sw, 158, False), (px, y0))
     # ALSO TODAY + map
     ay = 770
     ah = 160
@@ -1228,7 +1363,7 @@ def build():
     d.rectangle([M, ay, M + aw, ay + ah], fill=PANEL_BG, outline=BORDER, width=2)
     hf = font(SANS_B, 13)
     d.text((M + 8, ay + 6), "ALSO TODAY", font=hf, fill=INK)
-    sub2 = "- 22 more stories from Wednesday 25 November"
+    sub2 = "- 21 more stories from Wednesday 25 November"
     d.text((M + 8 + hf.getlength("ALSO TODAY") + 6, ay + 8), sub2, font=font(SANS, 11), fill=GREY)
     # two columns of 11; numbers coloured by each item's region
     itf = font(SANS, 10)
@@ -1239,15 +1374,17 @@ def build():
         cx = M + 8 + ci * col_w2
         for ri in range(11):
             idx = ci * 11 + ri
+            if idx >= len(ALSO):
+                break
             num, text, src = ALSO[idx]
             yy = ay + 23 + ri * 12
             d.text((cx, yy), str(num), font=btf, fill=REGION_COLORS[ALSO_REGIONS[idx]])
             nw = btf.getlength(str(num)) + 4
             # shorten text to fit (measured with the fonts actually drawn:
-            # #25's source is bold so "Bernama" stays legible at 9px,
-            # #33's source is 8px so the full place name fits; the second
+            # #24's source is bold so "Bernama" stays legible at 9px,
+            # #32's source is 8px so the full place name fits; the second
             # column runs 8px further right, to the panel edge)
-            sfont = font(SANS_B, 9) if num == 25 else (font(SANS, 8) if num == 33 else stf)
+            sfont = font(SANS_B, 9) if num == 24 else (font(SANS, 8) if num == 32 else stf)
             room = col_w2 - nw - 4 + (8 if ci == 1 else 0)
             t = text
             while itf.getlength(t) + sfont.getlength(" - " + src) > room and len(t) > 10:
