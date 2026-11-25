@@ -148,7 +148,9 @@ NUMBERS = [
 # (UTC time, event) - spread across the strip. The 00:18-00:30 cluster
 # keeps only two events: Gold $3,544.54 and Japan PPI +4.2% were
 # dropped because both already appear on the page (P6 deck / P3 deck
-# and the numbers panel), and four stacked labels made the strip messy.
+# and the numbers panel). The two cluster events are drawn JOINED on
+# one line below the axis ("Shenzhou lifts off · Australia CPI 3.8%")
+# so every event label on the strip shares ONE baseline.
 TIMELINE = [
     ("00:18", "Shenzhou lifts off"),
     ("00:30", "Australia CPI 3.8%"),
@@ -1114,9 +1116,10 @@ def build():
     # timeline strip: a TRUE proportional time axis, 00:00-18:00 UTC.
     # Dots sit at their real times. The 00:18-00:30 cluster is tight,
     # so its two times share ONE label ("00:18-00:30") centred on the
-    # cluster; the two events sit in tiers 0-1 below the line, no deeper
-    # than anywhere else on the strip. Hour ticks with hour
-    # numbers sit below the line. Hollow dots = scheduled.
+    # cluster, and its two events share ONE joined label below the
+    # line — so every event label on the strip sits on ONE baseline.
+    # Hour ticks with hour numbers sit below the line. Hollow dots =
+    # scheduled.
     ty = 125
     th = 89
     # gold 2px frame: same weight as every other border, gold so it reads
@@ -1172,15 +1175,31 @@ def build():
             tx = min(max(cx - tw / 2, M), ax1 - tw)
             d.text((tx, ty + 22 - tier * 10), t, font=tf2, fill=GOLD)
         hw = ef.getlength(ev) / 2 + 3
-        etier = 3
-        for i in range(4):
-            lx, lhw = e_last[i]
-            if cx - hw >= lx + lhw + 4:
-                etier = i
-                break
-        e_last[etier] = (cx, hw)
-        ex = min(max(cx - hw + 3, M), ax1 - 2 * hw + 6)
-        d.text((ex, ty + 44 + etier * 10), ev, font=ef, fill=(235, 235, 230))
+        if i == 0:
+            # cluster: both events joined on the ONE shared event
+            # baseline (ty + 44), centred on the cluster midpoint.
+            # Stacking was rejected: the upper line would have to sit
+            # on the axis line / hour numbers (measured). The joined
+            # line spans ~51..240, clearing "Crimea cuts begin"
+            # (~325..417) by ~85px.
+            joined = "Shenzhou lifts off · Australia CPI 3.8%"
+            jw = ef.getlength(joined)
+            ccx = (dot_x("00:18") + dot_x("00:30")) / 2
+            jx = min(max(ccx - jw / 2, M), ax1 - jw)
+            d.text((jx, ty + 44), joined, font=ef, fill=(235, 235, 230))
+            e_last[0] = (ccx, jw / 2 + 3)
+        elif i == 1:
+            pass  # event already in the joined cluster label above
+        else:
+            etier = 3
+            for k in range(4):
+                lx, lhw = e_last[k]
+                if cx - hw >= lx + lhw + 4:
+                    etier = k
+                    break
+            e_last[etier] = (cx, hw)
+            ex = min(max(cx - hw + 3, M), ax1 - 2 * hw + 6)
+            d.text((ex, ty + 44 + etier * 10), ev, font=ef, fill=(235, 235, 230))
         sched = "(sched.)" in ev
         if sched:
             d.ellipse([cx - 3, ay_line - 3, cx + 3, ay_line + 3], outline=GOLD, width=2)
@@ -1221,7 +1240,7 @@ def build():
         for ri in range(11):
             idx = ci * 11 + ri
             num, text, src = ALSO[idx]
-            yy = ay + 28 + ri * 12
+            yy = ay + 23 + ri * 12
             d.text((cx, yy), str(num), font=btf, fill=REGION_COLORS[ALSO_REGIONS[idx]])
             nw = btf.getlength(str(num)) + 4
             # shorten text to fit (measured with the fonts actually drawn:
@@ -1251,7 +1270,7 @@ def build():
            font=tf2, fill=INK)
     lf2 = font(SANS, 10)
     lines = fit_lines(LEFT_OUT, lf2, CW - 104 - 8, 2)
-    yy = fy + 22
+    yy = fy + 18
     for ln in lines:
         d.text((M + 104, yy), ln, font=lf2, fill=(60, 58, 52))
         yy += 12
@@ -1259,7 +1278,7 @@ def build():
     nf = font(SANS, 10)
     notes = ("Notes: Shenzhou-24 launched 00:18 UTC 25 Nov (08:18 Beijing) - "
              "Not yet when drawn: US inflation/GDP 13:30 UTC")
-    d.text((M + 104, fy + fh - 13), notes, font=nf, fill=(60, 58, 52))
+    d.text((M + 104, fy + fh - 17), notes, font=nf, fill=(60, 58, 52))
     # legend line
     ly = 996
     legend = ("HOW SURE: CONFIRMED = two or more outlets - OFFICIAL = on the record - "
